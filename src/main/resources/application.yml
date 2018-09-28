@@ -1,0 +1,13 @@
+server:
+  port: 8800
+
+spring:
+  application:
+    name: awsbucketservice
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8300/eureka
+    instance:
+      preferIpAddress: true
