@@ -26,12 +26,29 @@ var upload = multer({
     })
 });
 
+var singleUpload = upload.single('image');
+var multipleUpload = upload.array('image', 2);
+
+app.post('/single-upload', function(req, res) {
+    singleUpload(req, res, function(err, file) {
+      if (err) {
+        return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}] });
+      }
+      return res.json({'imageUrl': req.file.location});
+    });
+  })
+
 //use by upload form
 //'image' is the key name
-app.post('/upload', upload.array('image',2), function (req, res, next) {
-    res.send("Uploaded!");
+app.post('/multiple-upload', function (req, res) {
+    multipleUpload(req,res,function(err,file){
+        if(err){
+            return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}] });
+        }
+        return res.json({'message': 'uploaded'});
+    });
 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(8080, function () {
+    console.log('Example app listening on port 8080!');
 });
